@@ -15,6 +15,7 @@
             <div class="card-body px-5 bg-dark ">
                 ID : {{ $album->id }}
                 <p>Album Category : {{$album->albumType->name}}</p>
+                <p>Technologies : {{ $album->technology->name ?? 'None'}} </p>
                 <p class="card-title"> SINGER NAME'S: {{ $album->singer_name }}</p>
                 <p class="card-subtitle"> TITLE: {{ $album->title }}</p>
                 <p> SLUG : {{ $album->slug }}</p>

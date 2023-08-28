@@ -56,6 +56,23 @@
                     </label>
                     <input type="file" class="form-control" id="imageUrl" name="imageUrl" placeholder="Upload" value="{{  old('imageUrl', '') }}">
                 </div>
+                @error('Technology_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="mb-3">
+                    <label for="technologies" class="form-label">
+                        Select One o More Technologies
+                    </label>
+                    @foreach($technologies as $technology)
+                    <div class="d-block">
+                        <input type="checkbox" class="form-check-label " name="technologies[]" value="{{$technology->id}}" @if($album->technologies->contains($technology->id)) checked @endif>
+                        <label for="technology_id" class="form-check-label ">
+                            {{$technology->name}}
+                        </label>
+                    </div>
+
+                    @endforeach
+                </div>
             </div>
 
             <div class=" d-flex justify-content-center text-white">

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Album;
+use App\Models\AlbumType;
+use App\Models\Technology;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -26,7 +28,8 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        return view('admin.albums.create');
+        $technologies = Technology::all();
+        return view('admin.albums.create', compact('technologies'));
     }
 
     /**
@@ -38,9 +41,10 @@ class AlbumController extends Controller
         $data = $request->validate([
             'singer_name' => ['required', 'min:10', 'max:255'],
             'title' => ['required', Rule::unique('albums')->ignore($album->id), 'max:255'],
-            'image' => ['image'],
+            'image' => ['required', 'image'],
             'genres' => ['required', 'max:255'],
             'songs_number' => ['required', 'max:20'],
+            'technology_id' => ['exists:technologies,id']
 
         ]);
 
@@ -51,6 +55,12 @@ class AlbumController extends Controller
 
         $data['slug'] = Str::of($data['title'])->slug('-');
         $newAlbum = Album::create($data);
+
+        if ($request->has('technologies')) {
+            // si crea una relazione tra album e tutte le technologie selezionati nella create($request)
+            // il metodo sync() consente  di poter aggiungere e eliminare contemporaneamente i  record nella tabella ponte 
+            $newAlbum->technologies()->sync($request->technologies);
+        }
 
         return redirect()->route('admin.albums.show', $newAlbum);
     }
@@ -68,7 +78,9 @@ class AlbumController extends Controller
      */
     public function edit(Album $album)
     {
-        return view('admin.albums.edit', compact('album'));
+        $technologies = technology::all();
+        $albumTypes = AlbumType::all();
+        return view('admin.albums.edit', compact('album', 'albumTypes', 'technologies'));
     }
 
     /**
@@ -84,6 +96,7 @@ class AlbumController extends Controller
             'image' => ['image', 'max:555'],
             'genres' => ['required', 'max:255'],
             'songs_number' => ['required', 'max:20'],
+            'technology_id' => ['exists:technologies,id'],
 
         ]);
 
@@ -99,8 +112,14 @@ class AlbumController extends Controller
         //invece di compilare tutto a mano, e salvare, usiamo le fillable
 
         $data['slug'] = Str::of($data['title'])->slug('-');
-
         $album->update($data);
+
+        if ($request->has('technologies')) {
+            // si crea una relazione tra album e tutte le technologie selezionati nella create($request)
+            // il metodo sync() consente  di poter aggiungere e eliminare contemporaneamente i  record nella tabella ponte 
+            $album->technologies()->sync($request->technologies);
+            //
+        }
         return redirect()->route('admin.albums.show', compact('album'));
     }
 
@@ -138,8 +157,10 @@ class AlbumController extends Controller
     {
 
         $album = Album::onlyTrashed()->findOrFail($id);
+        storage::delete($album->image);
+        $album->technologies()->detach();
         $album->forceDelete();
-        storage::delete($album->imageUrl);
+
         return redirect()->route('admin.albums.index');
     }
 }

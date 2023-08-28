@@ -6,15 +6,6 @@
         @csrf
         <div class="row justify-content-center">
             <div class="col-6">
-                @error('Album_type')
-                <div class="alert alert-danger">{{ $message }}</div>
-                @enderror
-                <div class="mb-3">
-                    <label for="singer_name" class="form-label">
-                        Album type
-                    </label>
-                    <input type="text" class="form-control" id="singer_name" name="Album_type" value="{{old('Album_type', '' ) }}">
-                </div>
                 @error('singer_name')
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
@@ -32,6 +23,23 @@
                         Title
                     </label>
                     <input type="text" class="form-control" id="title" name="title" value="{{old('title', '' ) }}">
+                </div>
+                @error('Technology_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="mb-3">
+                    <label for="technologies" class="form-label">
+                        Select One o More Technologies
+                    </label>
+                    @foreach($technologies as $technology)
+                    <div class="d-block">
+                        <input type="checkbox" class="form-check-label " name="technologies[]" value="{{$technology->id}}" @if(in_array($technology->id, old('technologies', [] ))) checked @endif >
+                        <label for="technology_id" class="form-check-label ">
+                            {{$technology->name}}
+                        </label>
+                    </div>
+
+                    @endforeach
                 </div>
             </div>
             <div class=" col-6">
@@ -51,15 +59,16 @@
                     </label>
                     <input type="number" class="form-control" id="songs_number" name="songs_number" value="{{old('songs_number', '' ) }}">
                 </div>
-                @error('imageUrl')
+                @error('image')
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
                 <div class="mb-3">
-                    <label for="imageUrl" class="form-label">
+                    <label for="image" class="form-label">
                         Cover Album
                     </label>
-                    <input type="file" class="form-control" id="imageUrl" name="imageUrl">
+                    <input type="file" class="form-control" id="image" name="image">
                 </div>
+
             </div>
 
             <div class=" d-flex justify-content-center text-white">
