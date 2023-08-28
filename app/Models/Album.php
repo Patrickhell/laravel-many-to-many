@@ -25,4 +25,10 @@ class Album extends Model
     {
         return $this->belongsTo(AlbumType::class);
     }
+
+
+    public function technologies()
+    {
+        return $this->belongsToMany(Technology::class);
+    }
 }
