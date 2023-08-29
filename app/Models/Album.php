@@ -12,7 +12,7 @@ class Album extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'Album_type',
+        'album_type_id',
         'singer_name',
         'title',
         'slug',

@@ -7,6 +7,22 @@
         @method('PUT')
         <div class="row justify-content-center">
             <div class="col-6">
+                @error('album_type_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="mb-3">
+                    <label for="album_type_id" class="form-label">
+                        Choose a Category
+                    </label>
+                    <select class="form-select" name="album_type_id" id="album_type_id">
+                        @foreach($album_types as $album_type)
+                        <option value="{{$album_type->id}} " {{old('album_type_id', $album->album_type_id) == $album_type->id ? 'selected' : '' }}>
+                            {{$album->albumType->name}}
+                        </option>
+                        @endforeach
+
+                    </select>
+                </div>
                 @error('singer_name')
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
@@ -26,7 +42,8 @@
                     </label>
                     <input type="text" class="form-control" id="title" name="title" value="{{ old('title', $album->title) }}">
                 </div>
-
+            </div>
+            <div class="col-6">
                 @error('genres')
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
@@ -37,9 +54,6 @@
                     <input type="text" class="form-control" id="genres" name="genres" value="{{  old('genres', $album->genres) }}">
                 </div>
 
-            </div>
-            <div class="col-6">
-
                 <div class="mb-3">
                     <label for="songs_number" class="form-label">
                         Songs
@@ -47,14 +61,14 @@
                     <input type="number" class="form-control" id="songs_number" name="songs_number" value="{{  old('singer_number', $album->songs_number) }}">
                 </div>
 
-                @error('imageUrl')
+                @error('image')
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
                 <div class="mb-3">
-                    <label for="imageUrl" class="form-label">
+                    <label for="image" class="form-label">
                         Cover Album
                     </label>
-                    <input type="file" class="form-control" id="imageUrl" name="imageUrl" placeholder="Upload" value="{{  old('imageUrl', '') }}">
+                    <input type="file" class="form-control" id="image" name="image" value="{{  old('image', '') }}">
                 </div>
                 @error('Technology_id')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -65,7 +79,7 @@
                     </label>
                     @foreach($technologies as $technology)
                     <div class="d-block">
-                        <input type="checkbox" class="form-check-label " name="technologies[]" value="{{$technology->id}}" @if($album->technologies->contains($technology->id)) checked @endif>
+                        <input type="checkbox" class="form-check-label " name="technologies[]" value="{{$technology->id}}" @if(in_array($technology->id, old('technologies', [] ))) checked @endif >
                         <label for="technology_id" class="form-check-label ">
                             {{$technology->name}}
                         </label>

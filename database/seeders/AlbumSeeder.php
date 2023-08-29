@@ -37,7 +37,7 @@ class AlbumSeeder extends Seeder
             $newAlbum->slug = $faker->slug();
             $newAlbum->genres = $faker->randomElement($genres);
             $newAlbum->songs_number = $faker->numberBetween(8, 15);
-            $newAlbum->image = $faker->imageUrl(360, 360, 'Album', true, 'albums', true, 'jpg');
+            $newAlbum->image = $faker->imageUrl(250, 200, 'Album', true, 'albums', true, 'png');
             $newAlbum->save();
         }
     }

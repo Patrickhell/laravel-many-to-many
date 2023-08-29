@@ -6,6 +6,22 @@
         @csrf
         <div class="row justify-content-center">
             <div class="col-6">
+                @error('album_type_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+                <div class="mb-3">
+                    <label for="album_type_id" class="form-label">
+                        Choose a Category
+                    </label>
+                    <select class="form-select" name="album_type_id" id="album_type_id">
+                        @foreach($album_types as $album_type)
+                        <option value="{{$album_type->id}}" {{old('album_type_id') == $album_type->id ? 'selected' : '' }}>
+                            {{$album_type->name}}
+                        </option>
+                        @endforeach
+
+                    </select>
+                </div>
                 @error('singer_name')
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
@@ -24,7 +40,7 @@
                     </label>
                     <input type="text" class="form-control" id="title" name="title" value="{{old('title', '' ) }}">
                 </div>
-                @error('Technology_id')
+                @error('technology_id')
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
                 <div class="mb-3">
@@ -66,7 +82,7 @@
                     <label for="image" class="form-label">
                         Cover Album
                     </label>
-                    <input type="file" class="form-control" id="image" name="image">
+                    <input type="file" class="form-control" id="image" name="image" value="{{ old('image', '') }}">
                 </div>
 
             </div>

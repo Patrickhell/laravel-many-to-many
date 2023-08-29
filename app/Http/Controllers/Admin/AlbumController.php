@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Album;
 use App\Models\AlbumType;
+use App\Models\Album;
 use App\Models\Technology;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -27,29 +27,34 @@ class AlbumController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
+
     {
+        $album_types = AlbumType::all();
         $technologies = Technology::all();
-        return view('admin.albums.create', compact('technologies'));
+        return view('admin.albums.create', compact('album_types', 'technologies'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Album $album)
+    public function store(Request $request)
     {
-
+        //dd($request->all());
         $data = $request->validate([
             'singer_name' => ['required', 'min:10', 'max:255'],
-            'title' => ['required', Rule::unique('albums')->ignore($album->id), 'max:255'],
-            'image' => ['required', 'image'],
+            'title' => ['required', 'unique:albums', 'max:255'],
+            'image' => ['image', 'min_width=100,min_height=200'],
             'genres' => ['required', 'max:255'],
             'songs_number' => ['required', 'max:20'],
-            'technology_id' => ['exists:technologies,id']
+            'technology_id' => ['exists:technologies,id'],
+            'album_type_id' => ['required', 'exists:album_types,id'], // qui la validation serve ad assicurarsi che il valore scelto exista
+            //nella tabella album_type con la colonna :id cioè: album_type_id
 
         ]);
+        //dd($data);
 
         if ($request->hasFile('image')) {
-            $img_path = Storage::put('uploads/posts', $request['image']);
+            $img_path = Storage::put('uploads/admin/albums', $request['image']);
             $data['image'] = $img_path;
         }
 
@@ -78,9 +83,9 @@ class AlbumController extends Controller
      */
     public function edit(Album $album)
     {
-        $technologies = technology::all();
-        $albumTypes = AlbumType::all();
-        return view('admin.albums.edit', compact('album', 'albumTypes', 'technologies'));
+        $technologies = Technology::all();
+        $album_types = AlbumType::all();
+        return view('admin.albums.edit', compact('album', 'technologies', 'album_types'));
     }
 
     /**
@@ -93,10 +98,11 @@ class AlbumController extends Controller
             //per risolvere il problema dell'alert che dice che il titolo è già stato utilizzato infatti perché esendo unico non pùo essere usato più di una volta
             // si usa : il methodo ignore() usando la libreria: use Illuminate\Validation\Rule;  
             'title' => ['required', Rule::unique('albums')->ignore($album->id), 'max:255'],
-            'image' => ['image', 'max:555'],
-            'genres' => ['required', 'max:255'],
+            'image' => ['image'],
+            'genres' => ['required', 'max:25'],
             'songs_number' => ['required', 'max:20'],
             'technology_id' => ['exists:technologies,id'],
+            'album_type_id' => ['required', 'exists:album_types,id'],
 
         ]);
 

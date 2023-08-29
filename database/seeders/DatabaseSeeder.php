@@ -21,9 +21,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AlbumTypeSeeder::class,
+            TechnologySeeder::class,
             AlbumSeeder::class,
             //si pùo mettere prima o dopo albumSeeder perché la relazione tra album()->technology() è ManyToMany;
-            TechnologySeeder::class,
+
 
         ]);
     }

@@ -8,7 +8,6 @@
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">ID_CATEGORY</th>
                         <th scope="col">SINGER NAME'S</th>
                         <th scope="col">TITLE</th>
                         <th scope="col">SLUG</th>
@@ -22,9 +21,6 @@
                     <tr>
                         <td>
                             {{$album->id}}
-                        </td>
-                        <td class="text-center">
-                            {{$album->albumType_id}}
                         </td>
                         <td>
                             {{$album->singer_name}}
