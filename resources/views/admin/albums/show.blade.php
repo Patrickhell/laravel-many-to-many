@@ -14,18 +14,18 @@
             </div>
 
             <div class="card-body px-5 bg-dark ">
-                ID : {{ $album->id }}
+                ID-SLUG : {{ $album->id }} -- {{ $album->slug }}
+                <h5> TITLE : {{ $album->title}} </h5>
                 <p>Album Category : {{ $album->albumType->name}}</p>
 
                 @if (count($album->technologies) > 0)
                 <p>Technologies :
                     @foreach($album->technologies as $technology)
-                    {{$technology->name}} ,
+                    {{$technology->name}}
                     @endforeach
                 </p>
                 @endif
                 <p class="card-title"> SINGER NAME'S: {{ $album->singer_name }}</p>
-                <p class="card-subtitle"> TITLE: {{ $album->title }}</p>
                 <p> SLUG : {{ $album->slug }}</p>
                 <p class="card-text my-4">SONDS : {{ $album->songs_number}}</p>
                 <p>GENRES : {{ $album->genres }}</p>

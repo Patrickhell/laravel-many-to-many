@@ -43,7 +43,7 @@ class AlbumController extends Controller
         $data = $request->validate([
             'singer_name' => ['required', 'min:10', 'max:255'],
             'title' => ['required', 'unique:albums', 'max:255'],
-            'image' => ['image', 'min_width=100,min_height=200'],
+            'image' => ['image',],
             'genres' => ['required', 'max:255'],
             'songs_number' => ['required', 'max:20'],
             'technology_id' => ['exists:technologies,id'],
@@ -60,6 +60,9 @@ class AlbumController extends Controller
 
         $data['slug'] = Str::of($data['title'])->slug('-');
         $newAlbum = Album::create($data);
+
+        $newAlbum->slug = Str::of("$newAlbum->id " . $data['title'])->slug('-');
+        $newAlbum->save();
 
         if ($request->has('technologies')) {
             // si crea una relazione tra album e tutte le technologie selezionati nella create($request)
@@ -117,7 +120,7 @@ class AlbumController extends Controller
         // non potendo usare un methodo statico essendo che si pùo modificare il singolo campo del form, non si può scrivere: $album::update
         //invece di compilare tutto a mano, e salvare, usiamo le fillable
 
-        $data['slug'] = Str::of($data['title'])->slug('-');
+        $data['slug'] = Str::of("$album->id " . $data['title'])->slug('-');
         $album->update($data);
 
         if ($request->has('technologies')) {
