@@ -4,8 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\Album;
 use App\Models\AlbumType;
+use App\Models\Technology;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 class AlbumSeeder extends Seeder
@@ -34,10 +36,12 @@ class AlbumSeeder extends Seeder
             $newAlbum->album_type_id = $faker->randomElement($album_types)->id;
             $newAlbum->singer_name = $faker->randomElement($singer_name);
             $newAlbum->title = $faker->unique()->Words(2, true);
-            $newAlbum->slug = $faker->slug();
             $newAlbum->genres = $faker->randomElement($genres);
-            $newAlbum->songs_number = $faker->numberBetween(8, 15);
             $newAlbum->image = $faker->imageUrl(250, 200, 'Album', true, 'albums', true, 'png');
+            $newAlbum->songs_number = $faker->numberBetween(8, 15);
+            $newAlbum->slug = Str::of($newAlbum->title)->slug('-');
+            $newAlbum->save();
+            $newAlbum->slug = Str::of("$$newAlbum->id " . $newAlbum->title)->slug('-');
             $newAlbum->save();
         }
     }

@@ -14,8 +14,8 @@
             </div>
 
             <div class="card-body px-5 bg-dark ">
-                ID-SLUG : {{ $album->id }} -- {{ $album->slug }}
                 <h5> TITLE : {{ $album->title}} </h5>
+                <p> SLUG: {{ $album->slug }} </p>
                 <p>Album Category : {{ $album->albumType->name}}</p>
 
                 @if (count($album->technologies) > 0)
@@ -26,7 +26,6 @@
                 </p>
                 @endif
                 <p class="card-title"> SINGER NAME'S: {{ $album->singer_name }}</p>
-                <p> SLUG : {{ $album->slug }}</p>
                 <p class="card-text my-4">SONDS : {{ $album->songs_number}}</p>
                 <p>GENRES : {{ $album->genres }}</p>
                 <div class="d-flex justify-content-center ">

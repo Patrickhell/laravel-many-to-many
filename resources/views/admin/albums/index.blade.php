@@ -19,9 +19,9 @@
                 <tbody>
                     @foreach( $albums as $album)
                     <tr>
-                        <td>
+                        <th>
                             {{$album->id}}
-                        </td>
+                        </th>
                         <td>
                             {{$album->singer_name}}
                         </td>
@@ -30,7 +30,7 @@
                             {{$album->title}}
                         </td>
                         <td>
-                            {{$album->slug}}
+                            {{ $album->slug }}
                         </td>
                         <td>
                             {{$album->genres}}
